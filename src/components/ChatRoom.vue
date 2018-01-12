@@ -14,11 +14,11 @@
           .roomHead__button.zoom
         img.roomHead__img(src="https://lorempixel.com/50/50" draggable="false")
         .roomHead__title NCKU IM
-          i.fa.fa-users(aria-hidden="true") 
-      
+        <i class="fa fa-users"></i>
+
       //- roomBody
       #js-roomBody.roomBody
-        //- 使用 template 來當迴圈容器，或是判斷用的容器，當條件達成時產出 template 內容 
+        //- 使用 template 來當迴圈容器，或是判斷用的容器，當條件達成時產出 template 內容
         <template v-for="item in messages">
           //- other people
           <template v-if="item.userName != userName">
@@ -33,7 +33,7 @@
                   img(:src="item.message")
               .messageBox__time {{item.timeStamp}}
           </template>
-          //- self 
+          //- self
           <template v-if="item.userName == userName">
             .messageBox.messageBox--self
               .messageBox__time {{item.timeStamp}}
@@ -50,15 +50,15 @@
             #js-progressBar.messageBox__progress--state
             .messageBox__progress--number {{progress}}
       //- bottom
-      .roomBottom(:class="{ disable: !userName }") 
+      .roomBottom(:class="{ disable: !userName }")
         .roomBottom__tools
           .roomBottom__tools_upload
             input(type="file" accept="image/*" @change="sendImage($event)")
-            img(src="../assets/tools_file.png")
+            img(src="@/assets/tools_file.png")
         .roomBottom__input
-          //- 若要再帶入原生 js 的 event(e) 到 function 中，必須使用 $event 當參數傳入 
+          //- 若要再帶入原生 js 的 event(e) 到 function 中，必須使用 $event 當參數傳入
           textarea#js-message.roomBottom__input__textarea(:class="{ disable: !userName }" @keydown.enter="sendMessage($event)")
-    
+
     //- modal
     .modal(v-show="userNameSet || userName == ''")
       .modal__container
@@ -66,7 +66,7 @@
           h2.view-title Your Name
         .modal__body
           //- 使用 @keydown.enter 來偵測 keydown enter，觸發時執行 saveName()
-          input#js-userName.userName(type="text" maxlength="6" @keydown.enter="saveName()" :value="userName") 
+          input#js-userName.userName(type="text" maxlength="6" @keydown.enter="saveName()" :value="userName")
           .button(@click="saveName()") OK
         footer.modal__footer
 </template>
@@ -141,7 +141,7 @@ export default {
     },
     /** 傳送圖片 */
     sendImage(e) {
-      const vm = this;
+  		const vm = this;
       const userName = document.querySelector('#js-userName');
       // 取得上傳檔案的資料
       const file = e.target.files[0];
@@ -311,7 +311,6 @@ export default {
   left: 0;
   width: 20px;
   height: 20px;
-  color: white;
 }
 
 /* Body */

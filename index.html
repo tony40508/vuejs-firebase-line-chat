@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="./src/assets/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+  <title> Vue.js Line Chatroom </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Takeu&#39;s Practice">
+  <meta property="og:site_name" content="Takeu&#39;s Practice">
+  
+  <!-- script -->
+  <script src="https://www.gstatic.com/firebasejs/4.3.1/firebase.js"></script>
+  <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyBkorxCWWLH8YjuyMYWxqMMNZ3Bv8FJAH4",
+        authDomain: "vue-firebase-line-chat.firebaseapp.com",
+        databaseURL: "https://vue-firebase-line-chat.firebaseio.com",
+        projectId: "vue-firebase-line-chat",
+        storageBucket: "vue-firebase-line-chat.appspot.com",
+        messagingSenderId: "64144488378"
+      };
+      firebase.initializeApp(config);
+  </script> 
+</head>
+
+<body>
+  <style>
+    body {
+      margin-top: 48px;
+      font-family: sans-serif;
+      letter-spacing: 1px;
+    }
+    .header {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      background-color: #030303;
+      text-align: center;
+      padding: 10px 0px;
+      color: #efefef;
+      font-size: 20px;
+      font-weight: 800;
+      z-index: 2;
+    }
+
+    .header span {
+      margin: 0 5px;
+    }
+
+    .header a {
+      text-decoration: none;
+      color: unset;
+    }
+
+    .header img {
+      width: 50px;
+      height: 50px;
+      z-index: 3;
+    }
+  </style>
+
+  <div class="header">
+    <img src="./src/assets/ncku-icon.png" alt="">
+    <span><a href="#" >NCKU NM Project</a></span>
+    <span>|</span>
+    <span><a href="#">Vue.js Line Chatroom</a></span>
+  </div>
+
+  <div id="app"></div>
+</body>
+</html>

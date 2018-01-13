@@ -14,7 +14,7 @@
           .roomHead__button.zoom
         img.roomHead__img(src="https://lorempixel.com/50/50" draggable="false")
         .roomHead__title NCKU IM
-        img.roomHead__img_users(src="/static/users-icon.svg")
+        img.roomHead__img_users(src="static/img/users-icon.svg")
         .users-text {{userNumber}}
 
       //- roomBody

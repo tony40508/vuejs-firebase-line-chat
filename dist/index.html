@@ -1,48 +1,48 @@
-<!DOCTYPE html><html lang=zh-TW><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1,user-scalable=0"><meta http-equiv=X-UA-Compatible content="ie=edge"><meta name=description content=背不起來的就寫下來吧。><meta property=og:type content=website><meta property=og:title content="Gua&#39;s Note"><meta property=og:url content=https://guahsu.io/ ><meta property=og:site_name content="Gua&#39;s Note"><title>用 Vue.js + Firebase 製作即時聊天功能 | Gua's Note</title><script src=https://www.gstatic.com/firebasejs/4.3.1/firebase.js></script><script>(function (i, s, o, g, r, a, m) {
-      i['GoogleAnalyticsObject'] = r;
-      i[r] = i[r] || function () {
-        (i[r].q = i[r].q || []).push(arguments)
-      }, i[r].l = 1 * new Date();
-      a = s.createElement(o),
-        m = s.getElementsByTagName(o)[0];
-      a.async = 1;
-      a.src = g;
-      m.parentNode.insertBefore(a, m)
-    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
-    ga('create', 'UA-84594235-4', 'auto');
-    ga('send', 'pageview');
-
-    let config = {
-      apiKey: "AIzaSyB_27TotbJL9wsGD8oyWp5LtAmQPhWeSQU",
-      authDomain: "vue-chat-8083f.firebaseapp.com",
-      databaseURL: "https://vue-chat-8083f.firebaseio.com",
-      projectId: "vue-chat-8083f",
-      storageBucket: "vue-chat-8083f.appspot.com",
-      messagingSenderId: "165649429377"
-    };
-    firebase.initializeApp(config);</script><link href=static/css/app.c007c9a93c1a3be24daea2da6027c249.css rel=stylesheet></head><body><style>body {
+<!DOCTYPE html><html lang=zh-TW><head><meta charset=UTF-8><link rel=icon href=/static/favicon.ico type=image/x-icon><title>Vue.js Line Chatroom</title><meta name=viewport content="width=device-width,initial-scale=1,user-scalable=0"><meta http-equiv=X-UA-Compatible content="ie=edge"><meta property=og:type content=website><meta property=og:title content="Takeu&#39;s Practice"><meta property=og:site_name content="Takeu&#39;s Practice"><script src=https://www.gstatic.com/firebasejs/4.3.1/firebase.js></script><script>// Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyBkorxCWWLH8YjuyMYWxqMMNZ3Bv8FJAH4",
+        authDomain: "vue-firebase-line-chat.firebaseapp.com",
+        databaseURL: "https://vue-firebase-line-chat.firebaseio.com",
+        projectId: "vue-firebase-line-chat",
+        storageBucket: "vue-firebase-line-chat.appspot.com",
+        messagingSenderId: "64144488378"
+      };
+      firebase.initializeApp(config);</script><link href=static/css/app.9e6caeca2fe0eb0ebc29b46a23f492fb.css rel=stylesheet></head><body><style>body {
       margin-top: 48px;
+      font-family: sans-serif;
+      letter-spacing: 1px;
     }
-
-    .GuaHsu-header {
+    .header {
       position: absolute;
       left: 0;
       top: 0;
       width: 100%;
-      background-color: #333;
+      background-color: #030303;
       text-align: center;
-      padding: 10px 0px;
-      color: #7ff3cb;
-      font-size: 15px;
-      font-weight: 100;
-      z-index: 999;
+      padding: 5px 0px;
+      color: #efefef;
+      font-size: 20px;
+      font-weight: 800;
+      z-index: 2;
+      text-shadow: 0 0 1px #ff006c, 0 0 2px #ff006c, 0 0 3px #ff006c, 0 0 4px #ff417d, 0 0 7px #ff417d, 0 0 8px #ff417d, 0 0 10px #ff417d, 0 0 15px #ff417d;
     }
 
-    .GuaHsu-header span {
+    .header span {
       margin: 0 5px;
     }
 
-    .GuaHsu-header a {
+    .header a {
       text-decoration: none;
       color: unset;
-    }</style><div class=GuaHsu-header><span><a href=https://guahsu.io/2017/09/vue-firebase-realtime-line-chat/ target=_blank>練習心得</a></span> <span>|</span> <span><a href=https://github.com/guahsu/vue-firebase-line-chat/ target=_blank>GitHub</a></span></div><div id=app></div><script type=text/javascript src=static/js/manifest.fdd9fc0555235b402f94.js></script><script type=text/javascript src=static/js/vendor.448f2d15e3f6731dd22b.js></script><script type=text/javascript src=static/js/app.c37d5cfc82b6ebc9bde9.js></script></body></html>
+    }
+
+    .header img {
+      width: 30px;
+      height: 30px;
+			vertical-align: bottom;
+			display: inline-block;
+  		position: relative;
+			overflow: hidden;
+      z-index: 3;
+			cursor: pointer;
+    }</style><div class=header><img src=/static/ncku-icon.png> <span><a href=#>NCKU NM Project</a></span> <span>|</span> <span><a href=#>Vue.js Line Chatroom</a></span></div><div id=app></div><script type=text/javascript src=static/js/manifest.eeb6f9aeab497851cf8a.js></script><script type=text/javascript src=static/js/vendor.846907e1565c291109a6.js></script><script type=text/javascript src=static/js/app.dd29d1e86ec92a061094.js></script></body></html>

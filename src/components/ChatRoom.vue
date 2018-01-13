@@ -14,7 +14,8 @@
           .roomHead__button.zoom
         img.roomHead__img(src="https://lorempixel.com/50/50" draggable="false")
         .roomHead__title NCKU IM
-        <i class="fa fa-users"></i>
+        img.roomHead__img_users(src="/static/users-icon.svg")
+        .users-text {{userNumber}}
 
       //- roomBody
       #js-roomBody.roomBody
@@ -29,7 +30,7 @@
                 .messageBox__message(v-if="item.type == 'text'")
                   .messageBox__text {{item.message}}
                   .messageBox__readMore(@click="readMore($event)") 顯示更多
-                .messageBox__image(v-if="item.type == 'image'" )
+                .messageBox__image(v-if="item.type == 'image'")
                   img(:src="item.message")
               .messageBox__time {{item.timeStamp}}
           </template>
@@ -60,15 +61,17 @@
           textarea#js-message.roomBottom__input__textarea(:class="{ disable: !userName }" @keydown.enter="sendMessage($event)")
 
     //- modal
-    .modal(v-show="userNameSet || userName == ''")
-      .modal__container
-        header.modal__header
-          h2.view-title Your Name
-        .modal__body
-          //- 使用 @keydown.enter 來偵測 keydown enter，觸發時執行 saveName()
-          input#js-userName.userName(type="text" maxlength="6" @keydown.enter="saveName()" :value="userName")
-          .button(@click="saveName()") OK
-        footer.modal__footer
+    <transition name="fade">
+      .modal(v-show="userNameSet || userName == ''")
+        .modal__container
+          header.modal__header
+            h2.view-title Your Name
+          .modal__body
+            //- 使用 @keydown.enter 來偵測 keydown enter，觸發時執行 saveName()
+            input#js-userName.userName(type="text" maxlength="6" @keydown.enter="saveName()" :value="userName")
+            .button(@click="saveName()") OK
+          footer.modal__footer
+    </transition>
 </template>
 
 <script>
@@ -83,9 +86,19 @@ export default {
     return {
       userNameSet: false, // 姓名輸入框
       userName: '', // 名稱
+      userNumber: 0,
       messages: [], // 訊息內容
       upload: false, // 上傳進度框
       progress: '' // 上傳進度 % 數
+    }
+  },
+  watch: {
+    messages: {
+      handler(val, oldVal) {
+        const roomBody = document.querySelector('#js-roomBody');
+        roomBody.scrollTop = roomBody.scrollHeight;
+      },
+      deep: true
     }
   },
   // 這個頁面的functions
@@ -123,7 +136,7 @@ export default {
       }
       // 如果輸入是空則不傳送訊息
       if (message.value.length <= 1 && message.value.trim() == '') {
-        // 避免enter產生的空白換行
+        // 避免 enter 產生的空白換行
         e.preventDefault();
         return false;
       }
@@ -132,10 +145,10 @@ export default {
         userName: userName.value,
         type: 'text',
         message: message.value,
-        // 取得時間，這裡的vm.getTime()就是method中的getTime
+        // 取得時間，這裡的 vm.getTime() 就是method中的getTime
         timeStamp: vm.getTime()
       })
-      // 清空輸入欄位並避免enter產生的空白換行
+      // 清空輸入欄位並避免 enter 產生的空白換行
       message.value = '';
       e.preventDefault();
     },
@@ -201,6 +214,18 @@ export default {
     msgRef.on('value', function(snapshot) {
       const val = snapshot.val();
       vm.messages = val;
+
+      // Convert A Firebase Database Snapshot To An Array
+      let returnArr = [];
+      snapshot.forEach(childSnapshot => {
+          let item = childSnapshot.val();
+          item.key = childSnapshot.key;
+          returnArr.push(item.userName);
+      });
+
+      // 取出陣列不重複值
+      let resultArr = Array.from(new Set(returnArr));
+      vm.userNumber = resultArr.length;
     })
   },
   // update 是 vue的生命週期之一，在元件渲染完成後執行
@@ -230,7 +255,7 @@ export default {
 }
 .name {
   text-align: center;
-  margin: 10px 0px 10px 0px;
+  margin: -10px 0px 10px 0px;
 }
 .name h3{
   text-align: center;
@@ -300,17 +325,27 @@ export default {
   font-weight: 600;
   color: #FFFFFF;
   height: 80px;
-  margin: 5px 0px 0px 80px;
+  margin: 0px 0px 0px 80px;
   position: absolute;
   cursor: pointer;
 }
 
-.roomHead__title i {
+.roomHead__img_users {
   position: absolute;
-  top: 20px;
-  left: 0;
-  width: 20px;
-  height: 20px;
+  top: 52px;
+  left: 75px;
+  width: 25px;
+  height: 25px;
+  opacity: 0.4;
+}
+
+.users-text {
+  color: white;
+  font-size: 16px;
+  position: absolute;
+  top: 54px;
+  left: 105px;
+  opacity: 0.4;
 }
 
 /* Body */
@@ -444,9 +479,10 @@ export default {
   display: inline-block;
   position: relative;
   overflow: hidden;
+  transition: all 0.3s;
 }
 .roomBottom__tools_upload:hover {
-  border: solid 1px #DCDCDC;
+  background-color: #e3e8eb;
 }
 .roomBottom__tools_upload input {
   width: 100%;
@@ -517,6 +553,20 @@ export default {
   text-align: left;
   line-height: 24px;
 }
+
+.modal__body input {
+  outline: 0;
+  box-shadow: 0 0 0px 1000px #fefefe inset;
+  /* Remove the yellow background on input autofill */
+}
+.modal__body input:focus{
+  border: solid 1px #2B364B;
+}
+
+.modal__body .userName{
+  background-color: #fefefe;
+}
+
 .modal__img {
   max-width: 100%;
 }
@@ -525,6 +575,13 @@ export default {
   background-color: #2B364B;
   height: 8px;
   border-radius: 0px 0px 5px 5px;
+}
+/* transition */
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.6s
+}
+.fade-enter, .fade-leave-to  {
+  opacity: 0
 }
 
 /* name set */

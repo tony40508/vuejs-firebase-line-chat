@@ -56,6 +56,15 @@
           .roomBottom__tools_upload
             input(type="file" accept="image/*" @change="sendImage($event)")
             img(src="@/assets/tools_file.png")
+          .roomBottom__tools_emoji
+            img(src="@/assets/tools_emoji.png")
+            .emoji-list
+              span(@click="sendEmoji($event)").emoji 😄
+              span(@click="sendEmoji($event)").emoji 😃
+              span(@click="sendEmoji($event)").emoji 😀
+              span(@click="sendEmoji($event)").emoji 😊
+              span(@click="sendEmoji($event)").emoji 😉
+
         .roomBottom__input
           //- 若要再帶入原生 js 的 event(e) 到 function 中，必須使用 $event 當參數傳入
           textarea#js-message.roomBottom__input__textarea(:class="{ disable: !userName }" @keydown.enter="sendMessage($event)")
@@ -206,6 +215,13 @@ export default {
       e.target.previousElementSibling.setAttribute('style', 'max-height: 100%;')
       // 隱藏 "顯示更多" 按紐
       e.target.setAttribute('style', 'display: none;');
+    },
+    /** 傳送 Emoji */
+    sendEmoji(e) {
+      const textarea = document.getElementById('js-message');
+      // 取得當前的 target
+      let currentTarget = e.currentTarget;
+      textarea.value = textarea.value + e.currentTarget.innerHTML;
     }
   },
   // mounted 是 vue 的生命週期之一，代表模板已編譯完成，已經取值準備渲染元件了
@@ -492,7 +508,7 @@ export default {
   opacity: 0;
   position: absolute;
   cursor: pointer;
-  /* 讓input file可以支援pointer要加pl100% */
+  /* 讓input file可以支援pointer要加 pl100% */
   padding-left: 100%;
 }
 .roomBottom__tools_upload img {
@@ -508,7 +524,37 @@ export default {
   resize: none;
   outline: none;
 }
+/* emoji */
+.roomBottom__tools_emoji {
 
+}
+.roomBottom__tools_emoji img {
+  position: absolute;
+  bottom: 90px;
+  left: 35px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.roomBottom__tools_emoji img:hover {
+  background-color: #e3e8eb;
+}
+.emoji-list {
+  position: absolute;
+  bottom: 120px;
+  width: 200px;
+  height: 100px;
+  background-color: #ebebeb;
+  border-radius: 5px;
+  overflow-y: scroll;
+  padding: 0 5px 0 5px;
+}
+.emoji {
+  font-size: 20px;
+  cursor: pointer;
+  margin: 2px;
+}
 /* status */
 .disable {
   pointer-events: none;

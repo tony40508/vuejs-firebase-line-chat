@@ -3,7 +3,7 @@
     //- nameArea
     .name
       h3 Name：{{ userName }}
-      .reset(@click="setName()") Reset Name
+      h3.reset(@click="setName()") Reset Name
     //- chatRoom
     .chatRoom
       //- head
@@ -57,7 +57,8 @@
             input(type="file" accept="image/*" @change="sendImage($event)")
             img(src="@/assets/tools_file.png")
           .roomBottom__tools_emoji
-            img(src="@/assets/tools_emoji.png" @click="openEmojiList")
+            input(type="button" @click="openEmojiList" @blur="isActive = false")
+            img(src="@/assets/tools_emoji.png")
             .emoji-list(:class="isActive ? 'emoji-list--active' : ''")
               span(@click="sendEmoji($event)").emoji 😄
               span(@click="sendEmoji($event)").emoji 😃
@@ -272,8 +273,6 @@ export default {
       // 取得當前的 target
       let currentTarget = e.currentTarget;
       textarea.value = textarea.value + e.currentTarget.innerHTML;
-      // 關閉 Emoji List
-      this.isActive = false;
     },
     /** 打開 Emoji List */
     openEmojiList() {
@@ -328,7 +327,7 @@ export default {
 }
 .name {
   text-align: center;
-  margin: -10px 0px 10px 0px;
+  margin: 10px 0px 10px 0px;
 }
 .name h3{
   text-align: center;
@@ -338,9 +337,8 @@ export default {
 }
 .reset {
   position: relative;
-  margin-top: 10px;
   padding: 5px 10px;
-  font-weight: 600;
+  font-weight: 900;
   color: #333333;
   display: inline-block;
   cursor: pointer;
@@ -577,7 +575,7 @@ export default {
   opacity: 0;
   position: absolute;
   cursor: pointer;
-  /* 讓input file可以支援pointer要加 pl100% */
+  /* 讓 input file 可以支援 pointer 要加 pl100% */
   padding-left: 100%;
 }
 .roomBottom__tools_upload img {
@@ -594,7 +592,7 @@ export default {
   outline: none;
 }
 /* emoji */
-.roomBottom__tools_emoji img {
+.roomBottom__tools_emoji {
   position: absolute;
   bottom: 90px;
   left: 35px;
@@ -603,12 +601,25 @@ export default {
   cursor: pointer;
   transition: all 0.3s;
 }
-.roomBottom__tools_emoji img:hover {
+.roomBottom__tools_emoji input {
+  width: 100%;
+  height: 100%;
+  left: 0;
+  right: 0;
+  opacity: 0;
+  position: absolute;
+  cursor: pointer;
+}
+.roomBottom__tools_emoji:hover {
   background-color: #e3e8eb;
+}
+.roomBottom__tools_emoji img {
+  height: 100%;
 }
 .emoji-list {
   position: absolute;
-  bottom: 120px;
+  bottom: 30px;
+  left: -30px;
   width: 185px;
   height: 100px;
   background-color: #ebebeb;

@@ -57,17 +57,66 @@
             input(type="file" accept="image/*" @change="sendImage($event)")
             img(src="@/assets/tools_file.png")
           .roomBottom__tools_emoji
-            img(src="@/assets/tools_emoji.png")
-            .emoji-list
+            img(src="@/assets/tools_emoji.png" @click="openEmojiList")
+            .emoji-list(:class="isActive ? 'emoji-list--active' : ''")
               span(@click="sendEmoji($event)").emoji 😄
               span(@click="sendEmoji($event)").emoji 😃
               span(@click="sendEmoji($event)").emoji 😀
               span(@click="sendEmoji($event)").emoji 😊
               span(@click="sendEmoji($event)").emoji 😉
-
+              span(@click="sendEmoji($event)").emoji 😍
+              span(@click="sendEmoji($event)").emoji 😘
+              span(@click="sendEmoji($event)").emoji 😚
+              span(@click="sendEmoji($event)").emoji 😗
+              span(@click="sendEmoji($event)").emoji 😙
+              span(@click="sendEmoji($event)").emoji 😜
+              span(@click="sendEmoji($event)").emoji 😝
+              span(@click="sendEmoji($event)").emoji 😛
+              span(@click="sendEmoji($event)").emoji 😳
+              span(@click="sendEmoji($event)").emoji 😁
+              span(@click="sendEmoji($event)").emoji 😔
+              span(@click="sendEmoji($event)").emoji 😌
+              span(@click="sendEmoji($event)").emoji 😒
+              span(@click="sendEmoji($event)").emoji 😞
+              span(@click="sendEmoji($event)").emoji 😣
+              span(@click="sendEmoji($event)").emoji 😢
+              span(@click="sendEmoji($event)").emoji 😂
+              span(@click="sendEmoji($event)").emoji 😭
+              span(@click="sendEmoji($event)").emoji 😪
+              span(@click="sendEmoji($event)").emoji 😥
+              span(@click="sendEmoji($event)").emoji 😰
+              span(@click="sendEmoji($event)").emoji 😅
+              span(@click="sendEmoji($event)").emoji 😓
+              span(@click="sendEmoji($event)").emoji 😩
+              span(@click="sendEmoji($event)").emoji 😫
+              span(@click="sendEmoji($event)").emoji 😨
+              span(@click="sendEmoji($event)").emoji 😱
+              span(@click="sendEmoji($event)").emoji 😠
+              span(@click="sendEmoji($event)").emoji 😡
+              span(@click="sendEmoji($event)").emoji 😤
+              span(@click="sendEmoji($event)").emoji 😖
+              span(@click="sendEmoji($event)").emoji 😆
+              span(@click="sendEmoji($event)").emoji 😋
+              span(@click="sendEmoji($event)").emoji 😷
+              span(@click="sendEmoji($event)").emoji 😆
+              span(@click="sendEmoji($event)").emoji 😎
+              span(@click="sendEmoji($event)").emoji 😴
+              span(@click="sendEmoji($event)").emoji 😵
+              span(@click="sendEmoji($event)").emoji 😲
+              span(@click="sendEmoji($event)").emoji 😟
+              span(@click="sendEmoji($event)").emoji 😦
+              span(@click="sendEmoji($event)").emoji 😧
+              span(@click="sendEmoji($event)").emoji 😈
+              span(@click="sendEmoji($event)").emoji 👿
+              span(@click="sendEmoji($event)").emoji 😮
+              span(@click="sendEmoji($event)").emoji 😬
+              span(@click="sendEmoji($event)").emoji 😐
+              span(@click="sendEmoji($event)").emoji 😕
         .roomBottom__input
           //- 若要再帶入原生 js 的 event(e) 到 function 中，必須使用 $event 當參數傳入
-          textarea#js-message.roomBottom__input__textarea(:class="{ disable: !userName }" @keydown.enter="sendMessage($event)")
+          textarea#js-message.roomBottom__input__textarea(
+                                                          :class="{ disable: !userName }"
+                                                          @keydown.enter="sendMessage($event)")
 
     //- modal
     <transition name="fade">
@@ -95,10 +144,11 @@ export default {
     return {
       userNameSet: false, // 姓名輸入框
       userName: '', // 名稱
-      userNumber: 0,
+      userNumber: 0, // 使用者總數
       messages: [], // 訊息內容
       upload: false, // 上傳進度框
-      progress: '' // 上傳進度 % 數
+      progress: '', // 上傳進度 % 數
+      isActive: false
     }
   },
   watch: {
@@ -123,7 +173,7 @@ export default {
       const vm = this;
       const userName = document.querySelector('#js-userName').value;
       if (userName.trim() == '') { return; }
-      // 這裡的vm.userName(this.userName)就是data()裡面的userName
+      // 這裡的 vm.userName(this.userName) 就是 data() 裡面的 userName
       vm.userName = userName;
       vm.userNameSet = false;
     },
@@ -222,6 +272,13 @@ export default {
       // 取得當前的 target
       let currentTarget = e.currentTarget;
       textarea.value = textarea.value + e.currentTarget.innerHTML;
+      // 關閉 Emoji List
+      this.isActive = false;
+    },
+    /** 打開 Emoji List */
+    openEmojiList() {
+      this.isActive = !this.isActive;
+      console.log(isActive);
     }
   },
   // mounted 是 vue 的生命週期之一，代表模板已編譯完成，已經取值準備渲染元件了
@@ -280,14 +337,26 @@ export default {
   margin-right: 30px;
 }
 .reset {
+  position: relative;
   margin-top: 10px;
   padding: 5px 10px;
-  border-radius: 10px;
   font-weight: 600;
   color: #333333;
-  background-color: #CCCCCC;
   display: inline-block;
   cursor: pointer;
+}
+.reset:after {
+  content: "";
+  width: 0%;
+  height: 3px;
+  background-color: #333333;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  transition: width 0.2s;
+}
+.reset:hover:after {
+  width: 100%;
 }
 .chatRoom {
   position: absolute;
@@ -357,10 +426,10 @@ export default {
 
 .users-text {
   color: white;
-  font-size: 16px;
+  font-size: 14px;
   position: absolute;
-  top: 54px;
-  left: 105px;
+  top: 56px;
+  left: 102px;
   opacity: 0.4;
 }
 
@@ -525,9 +594,6 @@ export default {
   outline: none;
 }
 /* emoji */
-.roomBottom__tools_emoji {
-
-}
 .roomBottom__tools_emoji img {
   position: absolute;
   bottom: 90px;
@@ -543,18 +609,40 @@ export default {
 .emoji-list {
   position: absolute;
   bottom: 120px;
-  width: 200px;
+  width: 185px;
   height: 100px;
   background-color: #ebebeb;
   border-radius: 5px;
   overflow-y: scroll;
   padding: 0 5px 0 5px;
+  margin-bottom: 2px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s;
+}
+.emoji-list:after {
+  content: '';
+  position: fixed;
+  bottom: 110px;
+  left: 34px;
+  width: 2px;
+  height: 2px;
+  border-top: solid 10px #ebebeb;
+  border-left: solid 10px transparent;
+  border-right: solid 10px transparent;
+  z-index: 100;
+  transition: all 0.3s;
+}
+.emoji-list.emoji-list--active {
+  opacity: 1;
+  visibility: visible;
 }
 .emoji {
   font-size: 20px;
   cursor: pointer;
   margin: 2px;
 }
+
 /* status */
 .disable {
   pointer-events: none;

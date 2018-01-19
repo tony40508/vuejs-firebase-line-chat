@@ -1,6 +1,6 @@
 # :fire: vuejs-firebase-line-chat
 > Practice cloning a line chatroom for ncku nm homework
-* keydown shift and enter can wrap
+* keydown shift and enter can wrap to newline
 
 ## :white_check_mark: Goals
 - [x] modal animation

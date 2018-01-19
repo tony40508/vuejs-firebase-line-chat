@@ -118,7 +118,6 @@
           textarea#js-message.roomBottom__input__textarea(
                                                           :class="{ disable: !userName }"
                                                           @keydown.enter="sendMessage($event)")
-
     //- modal
     <transition name="fade">
       .modal(v-show="userNameSet || userName == ''")
@@ -137,6 +136,7 @@
 // msgRef = firebase中的資料表/messages/，若沒有的會自動建立
 const msgRef = firebase.database().ref('/messages/');
 const storageRef = firebase.storage().ref('/images/');
+
 export default {
   // 指定此頁使用的 name
   name: 'ChatRoom',
@@ -152,15 +152,15 @@ export default {
       isActive: false
     }
   },
-  watch: {
-    messages: {
-      handler(val, oldVal) {
-        const roomBody = document.querySelector('#js-roomBody');
-        roomBody.scrollTop = roomBody.scrollHeight;
-      },
-      deep: true
-    }
-  },
+  // watch: {
+  //   messages: {
+  //     handler(val, oldVal) {
+  //       // const roomBody = document.querySelector('#js-roomBody');
+  //       // roomBody.scrollTop = roomBody.scrollHeight;
+  //     },
+  //     deep: true
+  //   }
+  // },
   // 這個頁面的functions
   methods: {
     /** 彈出設定視窗 */
@@ -208,6 +208,11 @@ export default {
         // 取得時間，這裡的 vm.getTime() 就是method中的getTime
         timeStamp: vm.getTime()
       })
+      // Defer the callback to be executed after the next DOM update cycle
+      this.$nextTick(function () {
+        // DOM is now updated
+        this.scrollToEnd();
+      })
       // 清空輸入欄位並避免 enter 產生的空白換行
       message.value = '';
       e.preventDefault();
@@ -226,6 +231,11 @@ export default {
       let progressBar = document.querySelector('#js-progressBar');
       // 上傳資訊設定
       const uploadTask = storageRef.child(fileName).put(file, metadata);
+
+      this.$nextTick(function () {
+        // DOM is now updated
+        this.scrollToEnd();
+      })
       // 上傳狀態處理
       uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
         /* 上傳進度 */
@@ -278,6 +288,10 @@ export default {
     openEmojiList() {
       this.isActive = !this.isActive;
       console.log(isActive);
+    },
+    scrollToEnd() {
+      const roomBody = document.querySelector('#js-roomBody');
+      roomBody.scrollTop = roomBody.scrollHeight;
     }
   },
   // mounted 是 vue 的生命週期之一，代表模板已編譯完成，已經取值準備渲染元件了
@@ -304,14 +318,16 @@ export default {
   updated() {
     // 判斷內容高度超過 300 就隱藏起來，把 "顯示更多" 按紐打開
     const messages = document.querySelectorAll('.messageBox__message');
+
     messages.forEach((message) => {
       if (message.offsetHeight > 300) {
         message.querySelector('.messageBox__readMore').setAttribute('style', 'display: block');
       }
     })
     // 當畫面渲染完成，把聊天視窗滾到最底部(讀取最新消息)
-    const roomBody = document.querySelector('#js-roomBody');
-    roomBody.scrollTop = roomBody.scrollHeight;
+    // const roomBody = document.querySelector('#js-roomBody');
+    // roomBody.scrollTop = roomBody.scrollHeight;
+    this.scrollToEnd();
   }
 }
 </script>
